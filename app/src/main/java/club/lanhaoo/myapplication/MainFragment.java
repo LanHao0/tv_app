@@ -79,7 +79,7 @@ public class MainFragment extends BrowseFragment {
         setupUIElements();
 
         requestQueue= Volley.newRequestQueue(getActivity().getApplicationContext());
-        String API_getCategories = new ServerUrl().getServerUrl("getCategories");
+        String API_getCategories = new ServerUrl().getServerUrl("getCategories.php");
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API_getCategories, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -109,37 +109,43 @@ public class MainFragment extends BrowseFragment {
         }
     }
 
-    private void loadRows(JSONArray category) throws JSONException {
-        List<Movie> list = MovieList.setupMovies();
+    private void loadRows(final JSONArray category) throws JSONException {
 
-        ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
+        final ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
         CardPresenter cardPresenter = new CardPresenter();
 
         int i;
+        MovieList movieList=new MovieList(getActivity().getApplicationContext());
 
+        for (i = 0; i < category.length(); i++) {
 
-        for (i = 0; i < NUM_ROWS; i++) {
-            if (i != 0) {
-                Collections.shuffle(list);
-            }
-            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-            for (int j = 0; j < NUM_COLS; j++) {
-                listRowAdapter.add(list.get(j % 5));
-            }
-            HeaderItem header = new HeaderItem(i, category.getJSONObject(i).getString("t_name"));
-            rowsAdapter.add(new ListRow(header, listRowAdapter));
+            final ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
+            final int finalI = i;
+            movieList.get10NewVideoByType(Integer.parseInt(category.getJSONObject(i).getString("t_id")), new VolleyCallBack() {
+                @Override
+                public void onSuccessListMovie(List<Movie> result) throws JSONException {
+                    for (int j = 0; j < result.size(); j++) {
+                        listRowAdapter.add(result.get(j));
+                    }
+
+                    HeaderItem header = new HeaderItem(finalI, category.getJSONObject(finalI).getString("t_name"));
+                    rowsAdapter.add(new ListRow(header, listRowAdapter));
+                    setAdapter(rowsAdapter);
+                }
+            });
+
         }
 
-        HeaderItem gridHeader = new HeaderItem(i, "PREFERENCES");
+//        HeaderItem gridHeader = new HeaderItem(i, "PREFERENCES");
+//
+//        GridItemPresenter mGridPresenter = new GridItemPresenter();
+//        ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
+//        gridRowAdapter.add(getResources().getString(R.string.grid_view));
+//        gridRowAdapter.add(getString(R.string.error_fragment));
+//        gridRowAdapter.add(getResources().getString(R.string.personal_settings));
+//        rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
 
-        GridItemPresenter mGridPresenter = new GridItemPresenter();
-        ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
-        gridRowAdapter.add(getResources().getString(R.string.grid_view));
-        gridRowAdapter.add(getString(R.string.error_fragment));
-        gridRowAdapter.add(getResources().getString(R.string.personal_settings));
-        rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
 
-        setAdapter(rowsAdapter);
     }
 
     private void prepareBackgroundManager() {

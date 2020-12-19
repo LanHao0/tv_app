@@ -7,11 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,72 +15,58 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public final class MovieList {
-    private static List<Movie> list;
+    private List<Movie> list;
     private static long count = 0;
+    private RequestQueue requestQueue;
 
-    public static List<Movie> getList() {
-        if (list == null) {
-            list = setupMovies();
-        }
-        return list;
+//    public static List<Movie> getList(int Type) {
+//        list = setupMovies(Type);
+//        return list;
+//    }
+
+    public MovieList(Context context) {
+        requestQueue = Volley.newRequestQueue(context);
     }
 
-    public static List<Movie> setupMovies() {
-        list = new ArrayList<>();
-        String title[] = {
-                "Zeitgeist 2010_ Year in Review",
-                "Google Demo Slam_ 20ft Search",
-                "Introducing Gmail Blue",
-                "Introducing Google Fiber to the Pole",
-                "Introducing Google Nose"
-        };
 
-        String description = "Fusce id nisi turpis. Praesent viverra bibendum semper. "
-                + "Donec tristique, orci sed semper lacinia, quam erat rhoncus massa, non congue tellus est "
-                + "quis tellus. Sed mollis orci venenatis quam scelerisque accumsan. Curabitur a massa sit "
-                + "amet mi accumsan mollis sed et magna. Vivamus sed aliquam risus. Nulla eget dolor in elit "
-                + "facilisis mattis. Ut aliquet luctus lacus. Phasellus nec commodo erat. Praesent tempus id "
-                + "lectus ac scelerisque. Maecenas pretium cursus lectus id volutpat.";
-        String studio[] = {
-                "Studio Zero", "Studio One", "Studio Two", "Studio Three", "Studio Four"
-        };
-        String videoUrl[] = {
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review.mp4",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Demo%20Slam/Google%20Demo%20Slam_%2020ft%20Search.mp4",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Gmail%20Blue.mp4",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole.mp4",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose.mp4"
-        };
-        String bgImageUrl[] = {
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Demo%20Slam/Google%20Demo%20Slam_%2020ft%20Search/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Gmail%20Blue/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole/bg.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose/bg.jpg",
-        };
-        String cardImageUrl[] = {
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Demo%20Slam/Google%20Demo%20Slam_%2020ft%20Search/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Gmail%20Blue/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Fiber%20to%20the%20Pole/card.jpg",
-                "http://commondatastorage.googleapis.com/android-tv/Sample%20videos/April%20Fool's%202013/Introducing%20Google%20Nose/card.jpg"
-        };
+    public List<Movie> get10NewVideoByType(int Type, final VolleyCallBack callBack) {
+        String API_getCategories = new ServerUrl().getServerUrl("get10newByType.php?type=" + Type + "&page=1");
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API_getCategories, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    list = new ArrayList<>();
+                    for (int index = 0; index < response.length(); index++) {
+                        JSONObject video = response.getJSONObject(index);
+                        list.add(
+                                buildMovieInfo(
+                                        video.getString("d_name"),
+                                        video.getString("d_content"),
+                                        " ",
+                                        video.getString("d_playurl"),
+                                        video.getString("d_pic"),
+                                        video.getString("d_pic")
+                                ));
+                    }
+                    callBack.onSuccessListMovie(list);
+                } catch (JSONException ignored) {
 
-        for (int index = 0; index < title.length; ++index) {
-            list.add(
-                    buildMovieInfo(
-                            title[index],
-                            description,
-                            studio[index],
-                            videoUrl[index],
-                            cardImageUrl[index],
-                            bgImageUrl[index]));
-        }
+                }
 
-        return list;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
+
+        return null;
     }
 
     private static Movie buildMovieInfo(
