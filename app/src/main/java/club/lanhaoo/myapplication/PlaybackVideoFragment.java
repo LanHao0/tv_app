@@ -34,7 +34,9 @@ public class PlaybackVideoFragment extends VideoSupportFragment {
         mTransportControlGlue.setTitle(movie.getTitle());
         mTransportControlGlue.setSubtitle(movie.getDescription());
         mTransportControlGlue.playWhenPrepared();
-        playerAdapter.setDataSource(Uri.parse(movie.getVideoUrl()));
+        String videoUrl=movie.getVideoUrl();
+        System.out.println( movie.getVideoUrl());
+        playerAdapter.setDataSource(Uri.parse(videoUrl.split("\\$\\$\\$")[0].split("\\$")[1]));
     }
 
     @Override

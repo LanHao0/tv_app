@@ -166,7 +166,11 @@ public class VideoDetailsFragment extends DetailsFragment {
                     Intent intent = new Intent(getActivity(), PlaybackActivity.class);
                     intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
                     startActivity(intent);
-                } else {
+                } else if (action.getId()==ACTION_RENT){
+                    Intent intent = new Intent(getActivity(), FullscreenActivity.class);
+                    intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
+                    startActivity(intent);
+                }else{
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
