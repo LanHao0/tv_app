@@ -20,7 +20,7 @@ public class Search extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Search.this, SearchResult.class);
-                intent.putExtra("search_keyWord", textView.getText());
+                intent.putExtra("search_keyWord", textView.getText().toString());
                 startActivity(intent);
             }
         });

@@ -69,6 +69,34 @@ public final class MovieList {
         return null;
     }
 
+
+
+    public List<Movie> getVideoBySearch(String keyword, final VolleyCallBackArray callBackArray) {
+        String API_searchName = new ServerUrl().getServerUrl("search.php?keyword=" + keyword + "&page=1");
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API_searchName, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    callBackArray.onSuccessListMovie(response);
+                } catch (JSONException ignored) {
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
+
+        return null;
+    }
+
+
     private static Movie buildMovieInfo(
             String title,
             String description,

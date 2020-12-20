@@ -27,9 +27,10 @@ public class FullscreenActivity extends Activity {
 
         setContentView(R.layout.activity_fullscreen);
         Intent intent = getIntent();
-        Movie movie =
-                (Movie) intent.getSerializableExtra(DetailsActivity.MOVIE);
-        System.out.println("进入2");
+        String videoUrl =
+                (String) intent.getSerializableExtra(DetailsActivity.MOVIE);
+
+
         videoView = (VideoView)findViewById(R.id.video_view);
         videoView.setOnPreparedListener(new OnPreparedListener() {
             @Override
@@ -39,10 +40,7 @@ public class FullscreenActivity extends Activity {
             }
         });
 
-        //For now we just picked an arbitrary item to play
-        String videoUrl=movie.getVideoUrl();
-        System.out.println(videoUrl.split("\\$\\$\\$")[0]);
-        videoView.setVideoURI(Uri.parse(videoUrl.split("\\$\\$\\$")[0].split("\\$")[1]));
+        videoView.setVideoURI(Uri.parse(videoUrl));
 
     }
 
