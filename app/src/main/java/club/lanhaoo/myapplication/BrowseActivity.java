@@ -1,11 +1,13 @@
 package club.lanhaoo.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import app.com.tvrecyclerview.FocusHighlightHelper;
+import app.com.tvrecyclerview.GridObjectAdapter;
+import app.com.tvrecyclerview.RowItem;
+import app.com.tvrecyclerview.VerticalGridView;
 
 public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange {
     private RecyclerView recyclerCountryChoose;
@@ -43,6 +50,8 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
     private int nowPage = 1;
     private VideoAdapter videoAdapter;
 
+    private GridObjectAdapter Vadapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +60,11 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         selectedMovieCountry = null;
 
         recyclerChooseResult = findViewById(R.id.recyclerChooseResult);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        GridLayoutManager gridLayoutManager= new GridLayoutManager(BrowseActivity.this,6);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
 
-        recyclerChooseResult.setLayoutManager(linearLayoutManager);
 
+        recyclerChooseResult.setLayoutManager(gridLayoutManager);
 
         tv_type = findViewById(R.id.textView_typeSelection);
         tv_country = findViewById(R.id.textView_countrySelection);
@@ -176,6 +185,7 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
                         for (int i = 0; i < response.length(); i++) {
                             arrayList_video.add(response.getJSONObject(i));
                         }
+
                         LoadVideo(arrayList_video);
 
 
@@ -195,11 +205,12 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
     }
 
     private void LoadVideo(ArrayList<JSONObject> arrayList) {
-
         videoAdapter = new VideoAdapter(arrayList, BrowseActivity.this);
         recyclerChooseResult.setAdapter(videoAdapter);
 
     }
+
+
 
 
 }

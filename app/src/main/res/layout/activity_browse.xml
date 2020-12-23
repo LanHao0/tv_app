@@ -55,11 +55,13 @@
         app:layout_constraintStart_toEndOf="@+id/textView_typeSelection"
         app:layout_constraintTop_toBottomOf="@+id/recyclerCountryChoose" />
 
-    <androidx.recyclerview.widget.RecyclerView
 
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChooseResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_marginTop="215dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerTypeChoose" />
