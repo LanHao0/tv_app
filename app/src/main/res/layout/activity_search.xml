@@ -25,7 +25,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="输入影片名..."
-        android:text="mori"
         android:textSize="50dp"
         android:nextFocusDown="@id/button_Search"
         app:layout_constraintEnd_toEndOf="parent"

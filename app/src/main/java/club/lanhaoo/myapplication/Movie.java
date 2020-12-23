@@ -18,6 +18,13 @@ public class Movie implements Serializable {
     public Movie() {
     }
 
+    public Movie(String title, String description, String cardImageUrl, String videoUrl) {
+        this.title = title;
+        this.description = description;
+        this.cardImageUrl = cardImageUrl;
+        this.videoUrl = videoUrl;
+    }
+
     public long getId() {
         return id;
     }

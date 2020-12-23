@@ -1,8 +1,10 @@
 package club.lanhaoo.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.ImageCardView;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +45,6 @@ public class SearchResult extends Activity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         mlayoutManager = linearLayoutManager;
-
 
         madapter = new VideoAdapter(arrayList, SearchResult.this);
         recyclerView.setLayoutManager(mlayoutManager);

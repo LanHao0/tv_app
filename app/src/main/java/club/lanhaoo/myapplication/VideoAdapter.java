@@ -1,7 +1,9 @@
 package club.lanhaoo.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.leanback.widget.ImageCardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -75,12 +79,15 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, FullscreenActivity.class);
                     try {
-                        String url = arrayList.get(position).getString("d_playurl");
-                        //todo 检测是否分集
-                        intent.putExtra(DetailsActivity.MOVIE, url.split("\\$\\$\\$")[0].split("\\$")[1]);
+                        JSONObject jsonObject=arrayList.get(position);
+                        Movie movie=new Movie(jsonObject.getString("d_name"),jsonObject.getString("d_content"),jsonObject.getString("d_pic"),jsonObject.getString("d_playurl"));
+
+                        Intent intent = new Intent(context, VideoDetails.class);
+                        intent.putExtra(DetailsActivity.MOVIE, movie);
+
                         context.startActivity(intent);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
