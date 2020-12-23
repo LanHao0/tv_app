@@ -1,6 +1,7 @@
 package club.lanhaoo.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,10 +26,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import app.com.tvrecyclerview.FocusHighlightHelper;
-import app.com.tvrecyclerview.GridObjectAdapter;
-import app.com.tvrecyclerview.RowItem;
-import app.com.tvrecyclerview.VerticalGridView;
+
+
 
 public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange {
     private RecyclerView recyclerCountryChoose;
@@ -50,7 +49,7 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
     private int nowPage = 1;
     private VideoAdapter videoAdapter;
 
-    private GridObjectAdapter Vadapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +59,27 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         selectedMovieCountry = null;
 
         recyclerChooseResult = findViewById(R.id.recyclerChooseResult);
-        GridLayoutManager gridLayoutManager= new GridLayoutManager(BrowseActivity.this,6);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(BrowseActivity.this, 6);
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
 
 
         recyclerChooseResult.setLayoutManager(gridLayoutManager);
+
+        recyclerChooseResult.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                ConstraintLayout constraintLayout = findViewById(R.id.choose_selectionLayout);
+                if (b) {
+                    constraintLayout.animate()
+                            .y(20f)
+                            .setDuration(1000);
+                } else {
+                    constraintLayout.animate()
+                            .y(-20f)
+                            .setDuration(1000);
+                }
+            }
+        });
 
         tv_type = findViewById(R.id.textView_typeSelection);
         tv_country = findViewById(R.id.textView_countrySelection);
@@ -209,8 +224,6 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         recyclerChooseResult.setAdapter(videoAdapter);
 
     }
-
-
 
 
 }

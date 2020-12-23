@@ -10,50 +10,60 @@
     android:paddingBottom="0dp"
     tools:context=".BrowseActivity">
 
-    <TextView
-        android:id="@+id/textView_countrySelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="国家"
-        android:padding="5dp"
-        android:background="@color/light_blue_900"
-        android:textSize="30dp"
-        android:layout_marginTop="35dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCountryChoose"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/choose_selectionLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_constraintStart_toEndOf="@+id/textView_countrySelection"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView_typeSelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="类型"
-        android:padding="5dp"
-        android:background="@color/light_blue_900"
-        android:textSize="30dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_countrySelection" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerTypeChoose"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_constraintStart_toEndOf="@+id/textView_typeSelection"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerCountryChoose" />
+        <TextView
+            android:id="@+id/textView_countrySelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@color/light_blue_900"
+            android:padding="5dp"
+            android:text="国家"
+            android:textSize="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCountryChoose"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="100dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintStart_toEndOf="@+id/textView_countrySelection"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_typeSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:background="@color/light_blue_900"
+            android:padding="5dp"
+            android:text="类型"
+            android:textSize="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_countrySelection" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTypeChoose"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintStart_toEndOf="@+id/textView_typeSelection"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerCountryChoose" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -62,7 +72,7 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_marginTop="215dp"
+        android:layout_marginTop="205dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerTypeChoose" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_selectionLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
