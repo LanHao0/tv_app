@@ -86,7 +86,14 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         Intent intent = new Intent(context, VideoDetails.class);
                         intent.putExtra(DetailsActivity.MOVIE, movie);
 
-                        context.startActivity(intent);
+                        Activity activity =(Activity)context;
+                        Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                activity,
+                                viewHolder.imageView,
+                                DetailsActivity.SHARED_ELEMENT_NAME)
+                                .toBundle();
+
+                        context.startActivity(intent,bundle);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
