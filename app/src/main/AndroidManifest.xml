@@ -18,7 +18,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".VideoDetails"></activity>
+        <activity android:name=".BrowseActivity"></activity>
+        <activity android:name=".VideoDetails" />
         <activity android:name=".SearchResult" />
         <activity android:name=".Search" />
         <activity android:name=".PlaybackActivity" />

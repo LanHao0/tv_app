@@ -145,6 +145,15 @@ public class MainFragment extends BrowseFragment {
 //        gridRowAdapter.add(getResources().getString(R.string.personal_settings));
 //        rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
 
+ HeaderItem gridHeader = new HeaderItem(i, "浏览全部");
+
+        GridItemPresenter mGridPresenter = new GridItemPresenter();
+        ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
+        gridRowAdapter.add("浏览全部");
+//        gridRowAdapter.add(getString(R.string.error_fragment));
+//        gridRowAdapter.add(getResources().getString(R.string.personal_settings));
+        rowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
+
 
     }
 
@@ -230,6 +239,10 @@ public class MainFragment extends BrowseFragment {
                         .toBundle();
                 getActivity().startActivity(intent, bundle);
             } else if (item instanceof String) {
+                if (((String) item).contains("浏览全部")){
+                    Intent intent = new Intent(getActivity(), BrowseActivity.class);
+                    startActivity(intent);
+                }
                 if (((String) item).contains(getString(R.string.error_fragment))) {
                     Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
                     startActivity(intent);
