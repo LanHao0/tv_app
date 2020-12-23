@@ -3,6 +3,7 @@ package club.lanhaoo.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +38,16 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private TextView textView_title;
         private TextView textView_des;
         private ImageView imageView;
-        private CardView cardView;
+
         private LinearLayout linearLayout;
+        private LinearLayout linearLayoutBackground;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView_title = itemView.findViewById(R.id.title);
             textView_des = itemView.findViewById(R.id.des);
             imageView = itemView.findViewById(R.id.videoCover);
-            cardView = itemView.findViewById(R.id.videoCard);
+            linearLayoutBackground = itemView.findViewById(R.id.videoCard);
             linearLayout = itemView.findViewById(R.id.cardholder);
         }
     }
@@ -70,9 +72,11 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onFocusChange(View view, boolean b) {
                     if (b) {
-                        view.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200);
+                        viewHolder.linearLayout.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200);
+                        viewHolder.linearLayoutBackground.setBackgroundColor(context.getResources().getColor(R.color.light_blue_900));
                     } else {
-                        view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200);
+                        viewHolder.linearLayout.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200);
+                        viewHolder.linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }
             });
