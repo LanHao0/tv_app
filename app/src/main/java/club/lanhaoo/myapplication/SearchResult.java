@@ -7,6 +7,7 @@ import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ImageCardView;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,9 +43,10 @@ public class SearchResult extends Activity {
         arrayList = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyecler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        mlayoutManager = linearLayoutManager;
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,6);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
+
+        mlayoutManager = gridLayoutManager;
 
         madapter = new VideoAdapter(arrayList, SearchResult.this);
         recyclerView.setLayoutManager(mlayoutManager);

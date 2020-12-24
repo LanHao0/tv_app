@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 
 
-public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange {
+public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange,onCardFocusChange {
     private RecyclerView recyclerCountryChoose;
     private RecyclerView recyclerTypeChoose;
     private RecyclerView recyclerChooseResult;
@@ -65,21 +65,6 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
 
         recyclerChooseResult.setLayoutManager(gridLayoutManager);
 
-        recyclerChooseResult.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                ConstraintLayout constraintLayout = findViewById(R.id.choose_selectionLayout);
-                if (b) {
-                    constraintLayout.animate()
-                            .y(20f)
-                            .setDuration(1000);
-                } else {
-                    constraintLayout.animate()
-                            .y(-20f)
-                            .setDuration(1000);
-                }
-            }
-        });
 
         tv_type = findViewById(R.id.textView_typeSelection);
         tv_country = findViewById(R.id.textView_countrySelection);
@@ -176,6 +161,8 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         selectedMovieType = movieType;
         tv_type.setText(movieType.getName());
         changeVideoList();
+        //changeFocus
+        nowPage=1;
     }
 
     @Override
@@ -183,6 +170,8 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         selectedMovieCountry = movieCountry;
         tv_country.setText(movieCountry.getName());
         changeVideoList();
+        //changeFocus
+        nowPage=1;
     }
 
     public void changeVideoList() {
@@ -221,9 +210,47 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
 
     private void LoadVideo(ArrayList<JSONObject> arrayList) {
         videoAdapter = new VideoAdapter(arrayList, BrowseActivity.this);
+        videoAdapter.setOnCardFocusChange(this);
         recyclerChooseResult.setAdapter(videoAdapter);
 
     }
 
 
+    @Override
+    public void onChange(int position) {
+        if (position>arrayList_video.size()/2){
+            nowPage++;
+
+
+            String API_getMovies = new ServerUrl().getServerUrl("get10newByTypeAndCountry.php?type=" + selectedMovieType.getId() + "&country=" + selectedMovieCountry.getName() + "&page=" + nowPage);
+
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API_getMovies, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        if (response.length()>0){
+                            int original=arrayList_video.size();
+                            for (int i = 0; i < response.length(); i++) {
+                                arrayList_video.add(response.getJSONObject(i));
+                            }
+                            videoAdapter.notifyItemInserted(arrayList_video.size());
+                            recyclerChooseResult.requestFocus();
+
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            requestQueue.add(jsonArrayRequest);
+        }
+    }
 }

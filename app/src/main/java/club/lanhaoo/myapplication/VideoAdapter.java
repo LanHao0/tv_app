@@ -34,6 +34,12 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private ArrayList<JSONObject> arrayList;
     private Context context;
 
+    public void setOnCardFocusChange(club.lanhaoo.myapplication.onCardFocusChange onCardFocusChange) {
+        this.onCardFocusChange = onCardFocusChange;
+    }
+
+    private onCardFocusChange onCardFocusChange;
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView_title;
         private TextView textView_des;
@@ -78,6 +84,11 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         viewHolder.linearLayout.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200);
                         viewHolder.linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT);
                     }
+                    if (onCardFocusChange!=null){
+                        onCardFocusChange.onChange(viewHolder.getAdapterPosition());
+
+                    }
+
                 }
             });
             viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
