@@ -71,7 +71,7 @@ public class MainFragment extends BrowseFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
+//        Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
         prepareBackgroundManager();
@@ -104,7 +104,7 @@ public class MainFragment extends BrowseFragment {
     public void onDestroy() {
         super.onDestroy();
         if (null != mBackgroundTimer) {
-            Log.d(TAG, "onDestroy: " + mBackgroundTimer.toString());
+//            Log.d(TAG, "onDestroy: " + mBackgroundTimer.toString());
             mBackgroundTimer.cancel();
         }
     }
@@ -228,7 +228,7 @@ public class MainFragment extends BrowseFragment {
 
             if (item instanceof Movie) {
                 Movie movie = (Movie) item;
-                Log.d(TAG, "Item: " + item.toString());
+//                Log.d(TAG, "Item: " + item.toString());
                 Intent intent = new Intent(getActivity(), VideoDetails.class);
                 intent.putExtra(DetailsActivity.MOVIE, movie);
 

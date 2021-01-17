@@ -80,13 +80,14 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if (b) {
                         viewHolder.linearLayout.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200);
                         viewHolder.linearLayoutBackground.setBackgroundColor(context.getResources().getColor(R.color.light_blue_900));
+                        if (onCardFocusChange!=null){
+                            onCardFocusChange.onChange(viewHolder.getAdapterPosition());
+
+                        }
+
                     } else {
                         viewHolder.linearLayout.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200);
                         viewHolder.linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT);
-                    }
-                    if (onCardFocusChange!=null){
-                        onCardFocusChange.onChange(viewHolder.getAdapterPosition());
-
                     }
 
                 }

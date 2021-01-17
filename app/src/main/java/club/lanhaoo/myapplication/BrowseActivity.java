@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -218,9 +219,8 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
 
     @Override
     public void onChange(int position) {
-        if (position>arrayList_video.size()/2){
-            nowPage++;
-
+        Log.d("position", String.valueOf(position));
+        if (position>(arrayList_video.size()-1)/2){
 
             String API_getMovies = new ServerUrl().getServerUrl("get10newByTypeAndCountry.php?type=" + selectedMovieType.getId() + "&country=" + selectedMovieCountry.getName() + "&page=" + nowPage);
 
@@ -229,14 +229,10 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
                 public void onResponse(JSONArray response) {
                     try {
                         if (response.length()>0){
-                            int original=arrayList_video.size();
+                            nowPage++;
                             for (int i = 0; i < response.length(); i++) {
                                 arrayList_video.add(response.getJSONObject(i));
                             }
-                            videoAdapter.notifyItemInserted(arrayList_video.size());
-                            recyclerChooseResult.requestFocus();
-
-
                         }
 
 
