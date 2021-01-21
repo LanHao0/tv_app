@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="60dp"
+    android:paddingTop="25dp"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
     android:paddingBottom="0dp"
@@ -35,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginStart="100dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+
             android:nextFocusDown="@id/recyclerTypeChoose"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView_countrySelection"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,12 +56,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTypeChoose"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="103dp"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusDown="@id/recyclerChooseResult"
+            android:layout_marginTop="8dp"
+            android:nextFocusDown="@id/browse_confirm"
             app:layout_constraintStart_toEndOf="@+id/textView_typeSelection"
             app:layout_constraintTop_toBottomOf="@+id/recyclerCountryChoose" />
 
@@ -72,10 +70,21 @@
         android:id="@+id/recyclerChooseResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_marginTop="300dp"
         android:descendantFocusability="afterDescendants"
-        android:layout_marginTop="205dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_selectionLayout" />
+
+    <Button
+        android:id="@+id/browse_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerChooseResult"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/choose_selectionLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

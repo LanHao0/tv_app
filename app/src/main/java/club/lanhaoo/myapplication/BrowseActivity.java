@@ -2,6 +2,7 @@ package club.lanhaoo.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,8 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,9 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-
-
-public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange,onCardFocusChange {
+public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCountryFocusChange, onCardFocusChange {
     private RecyclerView recyclerCountryChoose;
     private RecyclerView recyclerTypeChoose;
     private RecyclerView recyclerChooseResult;
@@ -49,7 +50,6 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
     private ArrayList<JSONObject> arrayList_video;
     private int nowPage = 1;
     private VideoAdapter videoAdapter;
-
 
 
     @Override
@@ -127,6 +127,37 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         });
         requestQueue.add(jsonArrayCountry);
 
+        recyclerChooseResult.setVisibility(View.GONE);
+
+        Button button_confirm = findViewById(R.id.browse_confirm);
+        button_confirm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200);
+                    v.setBackgroundColor(getResources().getColor(R.color.light_blue_900));
+                } else {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200);
+                    v.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+        });
+        button_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerCountryChoose.setVisibility(View.GONE);
+                recyclerTypeChoose.setVisibility(View.GONE);
+
+                findViewById(R.id.textView_countrySelection).setVisibility(View.GONE);
+                findViewById(R.id.textView_typeSelection).setVisibility(View.GONE);
+                v.setVisibility(View.GONE);
+                ConstraintLayout.LayoutParams marginLayoutParams = new ConstraintLayout.LayoutParams(recyclerChooseResult.getLayoutParams());
+
+                marginLayoutParams.setMargins(0, 25, 0, 0);
+                recyclerChooseResult.setLayoutParams(marginLayoutParams);
+                recyclerChooseResult.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
 
@@ -163,7 +194,7 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         tv_type.setText(movieType.getName());
         changeVideoList();
         //changeFocus
-        nowPage=1;
+        nowPage = 1;
     }
 
     @Override
@@ -172,7 +203,7 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
         tv_country.setText(movieCountry.getName());
         changeVideoList();
         //changeFocus
-        nowPage=1;
+        nowPage = 1;
     }
 
     public void changeVideoList() {
@@ -220,15 +251,15 @@ public class BrowseActivity extends Activity implements OnTypeFocusChange, OnCou
     @Override
     public void onChange(int position) {
         Log.d("position", String.valueOf(position));
-        if (position>(arrayList_video.size()-1)/2){
-
+        if (position > (arrayList_video.size() - 1) / 2) {
+            System.out.println(selectedMovieCountry.getName());
             String API_getMovies = new ServerUrl().getServerUrl("get10newByTypeAndCountry.php?type=" + selectedMovieType.getId() + "&country=" + selectedMovieCountry.getName() + "&page=" + nowPage);
 
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API_getMovies, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        if (response.length()>0){
+                        if (response.length() > 0) {
                             nowPage++;
                             for (int i = 0; i < response.length(); i++) {
                                 arrayList_video.add(response.getJSONObject(i));
