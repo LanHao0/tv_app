@@ -39,17 +39,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.exoplayer2.C;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import club.lanhaoo.myapplication.ws.ChatServer;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";
@@ -98,6 +102,14 @@ public class MainFragment extends BrowseFragment {
         requestQueue.add(jsonArrayRequest);
 
         setupEventListeners();
+        try {
+            ChatServer chatServer =new ChatServer(112);
+            chatServer.setContext(getActivity().getApplicationContext());
+            chatServer.start();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

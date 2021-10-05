@@ -88,8 +88,15 @@ public class VideoDetails extends Activity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(VideoDetails.this, FullscreenActivity.class);
-                    intent.putExtra(DetailsActivity.MOVIE, video.getVideoUrl().split("\\$\\$\\$")[0].split("\\$")[1]);
+                    String[] videos=video.getVideoUrl().split("\\$\\$\\$");
+                    for (int i=0;i<videos.length;i++){
+                        if (video.getVideoUrl().split("\\$\\$\\$")[i].split("\\$")[1].contains(".m3u8")){
+                            intent.putExtra(DetailsActivity.MOVIE, video.getVideoUrl().split("\\$\\$\\$")[i].split("\\$")[1]);
+                            break;
+                        }
+                    }
                     startActivity(intent);
+
                 }
             });
 
